@@ -1,2 +1,0 @@
-airsim_ros_pkgs:basic:keybd_ctl:planner
--DCATKIN_DEVEL_PREFIX=/home/saob/MySource/uav_racer/devel -DCMAKE_INSTALL_PREFIX=/home/saob/MySource/uav_racer/install -G Unix Makefiles

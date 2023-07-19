@@ -31,9 +31,7 @@
 *.out
 *.app
 
-.catkin_tools/
 .idea/
 .vscode/
 .build/
 .devel/
-.catkin_workspace
