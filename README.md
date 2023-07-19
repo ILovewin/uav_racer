@@ -48,7 +48,7 @@ The 2022 unmanned aerial vehicle intelligent sensing technology competition onli
    - 设置ROS环境变量，使得在当前终端中可以正确运行和使用ROS软件包
 
      ```
-  source devel/setup.bash
+    source devel/setup.bash
      ```
    
      需要注意的是，默认的shell不同，`devel` 目录中生成的脚本文件不同，所以设置ROS环境时，需确保确保与自己的默认shell相对应
