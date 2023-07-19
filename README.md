@@ -39,16 +39,22 @@ The 2022 unmanned aerial vehicle intelligent sensing technology competition onli
      catkin_make
      ```
 
+     若出现这样的报错信息，只需再执行一次**catkin_make**
+
+     ```
+     Invoking "make -j8 -l8" failed
+     ```
+
    - 设置ROS环境变量，使得在当前终端中可以正确运行和使用ROS软件包
 
      ```
-     source devel/setup.bash
+  source devel/setup.bash
      ```
-
+   
      需要注意的是，默认的shell不同，`devel` 目录中生成的脚本文件不同，所以设置ROS环境时，需确保确保与自己的默认shell相对应
-
+   
    - 启动launch文件
-
+   
      ```
      roslaunch planner run.launch
      ```
