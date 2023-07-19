@@ -1,0 +1,4 @@
+<launch>
+    <node pkg="basic" type="basic" name="basic"/>
+    <node pkg="planner" type="planner" name="planner"/>
+</launch>

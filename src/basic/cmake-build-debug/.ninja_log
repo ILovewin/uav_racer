@@ -1,0 +1,6 @@
+# ninja log v5
+6	6571	1662067631008928500	CMakeFiles/basic.dir/src/image.cpp.o	4f48ed87adc2b6c5
+6	6569	1662067631008928500	CMakeFiles/basic.dir/src/img2cam3d.cpp.o	e9dfc17ab552425c
+5	6853	1662067631288954853	CMakeFiles/basic.dir/src/basic.cpp.o	8b0448cf6a2ee655
+6	6598	1662067631036931134	CMakeFiles/basic.dir/src/detect.cpp.o	79c71374c4678be2
+6853	7748	1662067632185039181	devel/lib/basic/basic	cc99bea28c32f8ff

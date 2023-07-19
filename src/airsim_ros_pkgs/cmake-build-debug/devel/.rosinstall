@@ -1,0 +1,2 @@
+- setup-file:
+    local-name: /home/airvoltex/mysource/IntelligentUAVChampionshipBase/src/airsim_ros_pkgs/cmake-build-debug/devel/setup.sh

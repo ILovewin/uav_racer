@@ -1,0 +1,8 @@
+prefix=/home/saob/MySource/uav_racer/devel
+
+Name: keybd_ctl
+Description: Description of keybd_ctl
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
