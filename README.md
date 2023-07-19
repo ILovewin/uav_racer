@@ -1,5 +1,5 @@
 # uav_racer
-The 2022 unmanned aerial vehicle intelligent sensing technology competition online speed through the circle
+The drone went through the loop at top speed
 
 ## 环境配置
 
@@ -48,10 +48,10 @@ The 2022 unmanned aerial vehicle intelligent sensing technology competition onli
    - 设置ROS环境变量，使得在当前终端中可以正确运行和使用ROS软件包
 
      ```
-    source devel/setup.bash
+   source devel/setup.bash
      ```
    
-     需要注意的是，默认的shell不同，`devel` 目录中生成的脚本文件不同，所以设置ROS环境时，需确保确保与自己的默认shell相对应
+     需要注意的是，默认的shell不同，**devel** 目录中生成的脚本文件不同，所以设置ROS环境时，需确保确保与自己的默认shell相对应
    
    - 启动launch文件
    
@@ -140,3 +140,4 @@ airsim_ros_pkgs::VelCmd control_pid(float x, float y, float z, int num) {//x,y,z
 - 无人机的起飞速度也可调整，原代码只设置了z轴（竖直）方向的线速度，改写的代码增加了x轴方向的线速度的设置，为1
 - 改写的代码在无人机每穿越一个障碍环后需调用PIDController（）函数，更新参数设置，避免持续累积误差
 
+[比赛规则和技术链接](https://www.robomaster.com/zh-CN/resource/pages/announcement/1461)
