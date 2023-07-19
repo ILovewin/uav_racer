@@ -51,7 +51,7 @@ The drone went through the loop at top speed
    source devel/setup.bash
      ```
    
-     需要注意的是，默认的shell不同，**devel** 目录中生成的脚本文件不同，所以设置ROS环境时，需确保确保与自己的默认shell相对应
+     需要注意：默认的shell不同，**devel** 目录中生成的脚本文件不同，所以设置ROS环境时，请确保与自己的默认shell相对应
    
    - 启动launch文件
    
