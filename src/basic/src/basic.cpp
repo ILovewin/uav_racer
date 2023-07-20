@@ -56,7 +56,7 @@ int main (int argc, char** argv) {
 
         detected_point_publisher.publish(vision_detector.center_point);
 
-        //在上面的real_pose_cb的回调函数里面已经给data赋值了
+        //发布坐标系之间的变换关系
         transform_puber.sendTransform(data);
 
         ros::spinOnce();//处理回调函数和其他ROS消息

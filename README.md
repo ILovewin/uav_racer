@@ -9,7 +9,7 @@ The drone went through the loop at top speed
 
 **必须先启动模拟器后再开启roswrapper,否则会出现topic无数据的问题；关闭时要先退出roswrapper在关闭模拟器，否则模拟器会卡死**
 
-1. ### WIN端启动模拟器
+1. ### WIN端启动模拟器	
 
    - 打开命令提示符，输入`ipconfig`命令，并按下回车键查看网络配置信息，选择合适的适配器的IPv4地址
 
@@ -60,6 +60,47 @@ The drone went through the loop at top speed
 |   /src/basic   | 订阅无人机图像和位置信息，进行图像处理和深度坐标转换，并发布检测到的路径点消息 |
 | /src/keybd_ctl |       实现通过键盘控制模拟器中无人机的起飞、降落和运动       |
 |  /src/planner  | 订阅来自视觉处理的点信息，将这些点与参考路径点进行处理和匹配，然后根据匹配结果通过PID控制生成速度命令,从而控制无人机的运动 |
+
+## 算法解析
+
+1. ### 世界坐标系与相机坐标系间的转换
+
+   使用[tf2_ros](http://wiki.ros.org/tf2_ros) 库发布、监听和应用坐标系之间的变换。它通过 `tf2_ros::TransformBroadcaster` 类发布变换，使用 `tf2_ros::TransformListener` 类监听变换，并使用 `tf2_ros::Buffer` 类应用变换
+
+   - 发布变换
+
+     创建一个名为`transform_puber`的`tf2_ros::TransformBroadcaster` 对象，用于发布坐标系之间的变换关系，并在 `real_pose_cb` 回调函数中，将数据头部的坐标系设置为 “map”，表示数据中的位置和姿态信息是相对于 “map” 坐标系来描述的，而子坐标系被设置为 “cam3d”，表示变换是从 “map” 坐标系到 “cam3d” 坐标系的。然后，这一回调函数还将无人机的位置信息和姿态信息被存入 `data.transform`中（**data**是**geometry_msgs::TransformStamped**类型的变量，用于描述两个坐标系之间的关系）。最后，在回调函数外部，使用 `transform_puber.sendTransform(data)` 发布变换
+
+   - 监听变换
+
+     创建一个`tf2_ros::Buffer` 对象`buffer`，用于存储和管理坐标变换的缓冲区。然后，创建一个名为`listener`的`tf2_ros::TransformListener` 对象，并将之前创建的 `buffer` 作为参数传递给它。这个监听器会订阅并接收 tf2 坐标变换的消息，并将其存储在 `buffer` 中
+
+   - 应用变换
+
+     使用 `tf2_ros::Buffer` 类中的`transform`方法来应用坐标系之间的变换。这个过程包括两个步骤：首先，应用平移变换，将点沿着 x、y、z 轴分别移动 `data.transform.translation.x`、`data.transform.translation.y` 和 `data.transform.translation.z` 的距离；然后，应用旋转变换，根据四元数 `data.transform.rotation` 来旋转点
+
+2. ### 相机逆投影
+
+   ```
+   //通过相机内参，将圆环的二维深度图像坐标(像素坐标)转换为相机坐标系下的三维深度坐标
+   this->center_point.point.x = point_pixel.point.z;
+   this->center_point.point.y = (point_pixel.point.x - caminfo.K.at(2)) / caminfo.K.at(0) * point_pixel.point.z;
+   this->center_point.point.z = (point_pixel.point.y - caminfo.K.at(5)) / caminfo.K.at(4) * point_pixel.point.z;
+   ```
+
+   逆投影： 逆投影是将深度图像中的像素坐标 `(u, v)` 和深度值 `z` 转换为相机坐标系下的三维深度坐标 `(X, Y, Z)` 的过程，所以在给定相机参数`caminfo.K`（**caminfo**是**geometry_msgs::PointStamped**的变量，在程序中通过订阅名为**airsim_node/drone_1/front_center/Scene/camera_info**的话题，再调用对应回调函数将相机信息传给这一变量）和深度图像中的像素坐标 `point_pixel` 的情况下，可以将圆环的二维深度图像坐标(像素坐标)转换为相机坐标系下的三维深度坐标
+
+   逆投影公式为：
+
+   ```
+   X = (u - cx) * z / fx
+   Y = (v - cy) * z / fy
+   Z = z
+   ```
+
+   相机的内参是由相机内参矩阵 `K`获得，`K` 是一个9个元素的一维数组，为 `[fx 0 cx 0 fy cy 0 0 1]`，其中 fx 和 fy 是相机在 x 和 y 方向上的焦距在像素尺度，cx 和 cy 是主点在图像坐标系中的位置
+
+   [参考资料](https://blog.csdn.net/kids_budong_c/article/details/125901134)
 
 ## 可优化模块
 
@@ -132,6 +173,6 @@ airsim_ros_pkgs::VelCmd control_pid(float x, float y, float z, int num) {//x,y,z
 - 经测试，速度控制改用这一代码穿圈所用时间与原代码穿圈所用时间基本一致，但稳定性不如原代码，仍需继续调整PID参数
 - 下一步将针对特定路径调整PID参数和速度范围，原代码设置的最大速度为10.0，最小速度为8.0，改写这部分代码设置的最大速度为11.4，最小速度为8.4
 - 无人机的起飞速度也可调整，原代码只设置了z轴（竖直）方向的线速度，改写的代码增加了x轴方向的线速度的设置，为1
-- 改写的代码在无人机每穿越一个障碍环后需调用PIDController（）函数，更新参数设置，避免持续累积误差
+- 改写的代码在无人机每穿越一个障碍环后需更新参数设置（可自定义一个set函数），避免持续累积误差
 
 [比赛规则和技术链接](https://www.robomaster.com/zh-CN/resource/pages/announcement/1461)
