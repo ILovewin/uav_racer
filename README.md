@@ -3,7 +3,7 @@ The drone went through the loop at top speed
 
 ## 环境配置
 
-采用LINUX + WIN 双机开发模式，WIN 端运行模拟器能提供最佳运行性能，双机模式分离后免除了ros 端程序对模拟器的影响，使得开发更便利。具体请参考RoboMaster官方[自主无人机竞速模拟器使用说明](https://github.com/RoboMaster/IntelligentUAVChampionshipSimulator)配置环境。
+采用LINUX + WIN 双机开发模式，WIN 端运行模拟器能提供最佳运行性能，双机模式分离后免除了ros 端程序对模拟器的影响，使得开发更便利。具体请参考RoboMaster官方[2022年自主无人机竞速模拟器使用说明](https://github.com/RoboMaster/IntelligentUAVChampionshipSimulator)配置环境。
 
 ## 快速使用
 

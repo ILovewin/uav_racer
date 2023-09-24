@@ -17,7 +17,7 @@ int main (int argc, char** argv) {
     //创建一个名为 cam_info_suber 的订阅者对象。它订阅了名为 "airsim_node/drone_1/front_center/Scene/camera_info" 的话题，队列大小为1，并且指定了回调函数 cam_info_cb,通过回调函数将镜头传来的图片信息传给vision_detector.caminfo
     ros::Subscriber cam_info_suber = n.subscribe("airsim_node/drone_1/front_center/Scene/camera_info", 1, cam_info_cb);// camerainfo
 
-    //创建名为 front_View_suber 的图像订阅者对象。它订阅了名为 "airsim_node/drone_1/front_center/Scene" 的图像话题，指定队列大小为1，并且指定了回调函数 front_view_cb ,通过回调函数将订阅得到无人机的坐标信息和速度信息,存到了data变量里面
+    //创建名为 real_pose_suber 的订阅者对象。它订阅了名为 "airsim_node/drone_1/odom_local_ned" 的位姿话题，指定队列大小为1，并且指定了回调函数 real_pose_cb ,通过回调函数将订阅得到无人机状态真值,存到了data变量里面
     ros::Subscriber real_pose_suber = n.subscribe("airsim_node/drone_1/odom_local_ned", 1, real_pose_cb);
 
     //创建一个订阅者front_View_suber，用于接收"airsim_node/drone_1/front_center/Scene"话题中的图像消息。当有新的图像消息到达时，将调用名为front_view_cb的回调函数来对接收图像进行颜色提取和形态学转换的预处理操作
